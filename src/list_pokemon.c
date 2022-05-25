@@ -9,49 +9,50 @@ pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name) {
         (*list)->pokemon->name = name;
         return (*list)->pokemon;
     }
-    node_pokemon* tmp = malloc(sizeof (node_pokemon));
-    (*list)->next = *list;
-    (*list)->pokemon = malloc(sizeof(pokemon_info));
-    *list = tmp;
-    return tmp->pokemon;
+    node_pokemon* res = malloc(sizeof (node_pokemon));
+    res->pokemon = malloc(sizeof (pokemon_info));
+    res->pokemon->id = id;
+    res->pokemon->name = name;
+    res->next = NULL;
+
+    node_pokemon* last_el;
+    for(last_el = *list; last_el->next != NULL; last_el = last_el->next) { }
+    last_el->next = res;
+    return res->pokemon;
 }
 
 void list_remove(head_list_pokemon** list, size_t index) {
-    node_pokemon* tmp = *list;
-    if(tmp == NULL) {
-        return ;
-    }
-    for(size_t i = 0; i < index-1; i++) {
-        if(tmp == NULL) {
-            return ;
-        }
-        tmp = tmp->next;
-    }
-    if(tmp == NULL) {
-        return ;
-    }
-
-    tmp->next = tmp->next->next;
+    pokemon_info* pi = list_pop(list, index);
+    free(pi->name);
+    free(pi);
 }
 
 pokemon_info* list_pop(head_list_pokemon** list, size_t index) {
-    node_pokemon* tmp = *list;
-    if(tmp == NULL) {
+    node_pokemon* curr = *list;
+    if(curr == NULL) {
         return NULL;
     }
+    if(index == 0) {
+        pokemon_info* res = (*list)->pokemon;
+        node_pokemon* tmp = *list;
+        *list = (*list)->next;
+        free(tmp);
+        return res;
+    }
     for(size_t i = 0; i < index-1; i++) {
-        if(tmp == NULL) {
+        if(curr == NULL) {
             return NULL;
         }
-        tmp = tmp->next;
+        curr = curr->next;
     }
-    if(tmp == NULL) {
+    if(curr == NULL) {
         return NULL;
     }
 
-    pokemon_info* res = tmp->next->pokemon;
-    free(tmp->next);
-    tmp->next = tmp->next->next;
+    pokemon_info* res = curr->next->pokemon;
+    node_pokemon* tmp = curr->next;
+    curr->next = curr->next->next;
+    free(tmp);
     return res;
 }
 
@@ -65,6 +66,9 @@ pokemon_info* list_get(head_list_pokemon* list, size_t index) {
             return NULL;
         }
         tmp = tmp->next;
+    }
+    if(tmp == NULL) {
+        return NULL;
     }
     return tmp->pokemon;
 }
@@ -90,7 +94,7 @@ void list_print(head_list_pokemon* list) {
     if(tmp == NULL) {
         puts("<empty>");
     }
-    for(tmp = list; tmp; tmp = tmp->next) {
+    for(tmp = list; tmp != NULL; tmp = tmp->next) {
         printf("(%hhu) %s\n", tmp->pokemon->id, tmp->pokemon->name);
     }
 }
