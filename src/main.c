@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	for(int i = 0; !list_is_empty(list); i++) {
 		printf("size: %lu\n", list_length(list));
 		printf("is empty: %hhu\n", list_is_empty(list));
-		printf("(element 1)->name: %s\n", list_get(list, 0)->name);
+		printf("(element 0)->name: %s\n", list_get(list, 0)->name);
 		printf("popping: %s\n", list_pop(&list, 0)->name);
 		list_print(list);
 	}

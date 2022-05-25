@@ -32,17 +32,14 @@ pokemon_info* list_pop(head_list_pokemon** list, size_t index) {
     if(curr == NULL) {
         return NULL;
     }
-    if(index == 0) {
+    if(index == 0) { // special case here because 0-1 would overflow as size_t is unsigned
         pokemon_info* res = (*list)->pokemon;
         node_pokemon* tmp = *list;
         *list = (*list)->next;
         free(tmp);
         return res;
     }
-    for(size_t i = 0; i < index-1; i++) {
-        if(curr == NULL) {
-            return NULL;
-        }
+    for(size_t i = 0; i < index-1 && curr != NULL; i++) {
         curr = curr->next;
     }
     if(curr == NULL) {
@@ -58,13 +55,7 @@ pokemon_info* list_pop(head_list_pokemon** list, size_t index) {
 
 pokemon_info* list_get(head_list_pokemon* list, size_t index) {
     node_pokemon* tmp = list;
-    if(tmp == NULL) {
-        return NULL;
-    }
-    for(size_t i = 0; i < index; i++) {
-        if(tmp == NULL) {
-            return NULL;
-        }
+    for(size_t i = 0; i < index && tmp != NULL; i++) {
         tmp = tmp->next;
     }
     if(tmp == NULL) {
