@@ -1,33 +1,34 @@
 #include "list_pokemon.h"
 
-void list_add(head_list_pokemon** list, uint8_t id, char* name) {
-    if(*list = NULL) {
+pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name) {
+    if(*list == NULL) {
         *list = malloc(sizeof (node_pokemon));
         (*list)->next = NULL;
         (*list)->pokemon = malloc(sizeof (pokemon_info));
         (*list)->pokemon->id = id;
         (*list)->pokemon->name = name;
-        return;
+        return (*list)->pokemon;
     }
     node_pokemon* tmp = malloc(sizeof (node_pokemon));
     (*list)->next = *list;
     (*list)->pokemon = malloc(sizeof(pokemon_info));
     *list = tmp;
+    return tmp->pokemon;
 }
 
 void list_remove(head_list_pokemon** list, size_t index) {
     node_pokemon* tmp = *list;
     if(tmp == NULL) {
-        return NULL;
+        return ;
     }
     for(size_t i = 0; i < index-1; i++) {
         if(tmp == NULL) {
-            return NULL;
+            return ;
         }
         tmp = tmp->next;
     }
     if(tmp == NULL) {
-        return NULL;
+        return ;
     }
 
     tmp->next = tmp->next->next;

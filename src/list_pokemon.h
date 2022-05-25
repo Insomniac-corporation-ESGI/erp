@@ -3,6 +3,9 @@
 
 #include "stdint.h"
 #include "stddef.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "unistd.h"
 
 #define SORT_BY_ID 0
 #define SORT_BY_NAME 1
@@ -21,7 +24,7 @@ typedef struct node_pokemon head_list_pokemon;
 typedef struct node_pokemon node_pokemon;
 typedef struct pokemon_info pokemon_info;
 
-void list_add(head_list_pokemon** list, uint8_t id, char* name);
+pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name);
 void list_remove(head_list_pokemon** list, size_t index);
 pokemon_info* list_pop(head_list_pokemon** list, size_t index);
 pokemon_info* list_get(head_list_pokemon* list, size_t index);
