@@ -1,5 +1,6 @@
 #include "list_pokemon.h"
 
+// here "name" should be allocated in the heap, as it will be freed if using the list_remove function
 pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name) {
     if(*list == NULL) {
         *list = malloc(sizeof (node_pokemon));
@@ -92,9 +93,11 @@ void list_print(head_list_pokemon* list) {
 
 // sort
 void _list_sort_id(head_list_pokemon** list) {
-    (void)list;
+    puts("Calling _list_sort_id !");
+    list_print(*list);
 }
 
 void _list_sort_name(head_list_pokemon** list) {
-    (void)list;
+    puts("Calling _list_sort_name !");
+    list_print(*list);
 }

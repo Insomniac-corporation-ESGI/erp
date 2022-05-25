@@ -24,5 +24,8 @@ int main(int argc, char** argv) {
 	printf("size: %lu\n", list_length(list));
 	printf("is empty: %hhu\n", list_is_empty(list));
 	list_print(list);
+
+	list_sort[SORT_BY_ID](&list);
+	list_sort[SORT_BY_NAME](&list);
     return 0;
 }
