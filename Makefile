@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -pedantic -Werror
+CFLAGS = -Wall -Wextra -pedantic -Werror -c99
 SRC = src
 BUILD = build
 
