@@ -14,3 +14,6 @@ $(BUILD)/main.o: $(SRC)/main.c $(BUILD)/list_pokemon.o
 
 clean:
 	rm $(BUILD)/* main
+
+run: all
+	./main
