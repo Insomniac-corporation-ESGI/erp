@@ -1,18 +1,42 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#include "stdint.h"
-#include "stddef.h"
-#include "stdlib.h"
-#include "stdio.h"
-#include "unistd.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
 
-#define SORT_BY_ID 0
-#define SORT_BY_NAME 1
+enum pokemon_type {
+  NORMAL,
+  FIRE,
+  WATER,
+  ELECTRIC,
+  GRASS,
+  ICE,
+  FIGHTING,
+  POISON,
+  GROUND,
+  FLYING,
+  PSYCHIC,
+  BUG,
+  ROCK,
+  GHOST,
+  DRAGON,
+  DARK,
+  STEEL,
+  FAIRY
+};
 
 struct pokemon_info {
-	uint8_t id;
 	char* name;
+	enum pokemon_type type;
+	unsigned int count_owned;
+	time_t first_seen;
+	time_t last_seen;
+
 };
 
 struct node_pokemon {
@@ -24,21 +48,15 @@ typedef struct node_pokemon head_list_pokemon;
 typedef struct node_pokemon node_pokemon;
 typedef struct pokemon_info pokemon_info;
 
-pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name);
+// a copy of pokemon_info will be made in the function
+pokemon_info* list_add(head_list_pokemon** list, struct pokemon_info pkm_info);
+
 void list_remove(head_list_pokemon** list, size_t index);
 pokemon_info* list_pop(head_list_pokemon** list, size_t index);
 pokemon_info* list_get(head_list_pokemon* list, size_t index);
+pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
 int list_is_empty(head_list_pokemon* list);
 size_t list_length(head_list_pokemon* list);
 void list_print(head_list_pokemon* list);
 
-// sort
-void _list_sort_id(head_list_pokemon** list);
-void _list_sort_name(head_list_pokemon** list);
-
-void (*list_sort[2])(head_list_pokemon**);
-
-#define INIT_LISTS \
-			list_sort[SORT_BY_ID] = _list_sort_id; \
-			list_sort[SORT_BY_NAME] = _list_sort_name;
 #endif

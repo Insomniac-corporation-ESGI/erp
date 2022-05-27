@@ -1,19 +1,18 @@
 #include "list_pokemon.h"
+#include <string.h>
 
 // here "name" should be allocated in the heap, as it will be freed if using the list_remove function
-pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name) {
+pokemon_info* list_add(head_list_pokemon** list, struct pokemon_info pkm_info) {
     if(*list == NULL) {
         *list = malloc(sizeof (node_pokemon));
         (*list)->next = NULL;
         (*list)->pokemon = malloc(sizeof (pokemon_info));
-        (*list)->pokemon->id = id;
-        (*list)->pokemon->name = name;
+        memcpy((*list)->pokemon, &pkm_info, sizeof (pokemon_info));
         return (*list)->pokemon;
     }
     node_pokemon* res = malloc(sizeof (node_pokemon));
     res->pokemon = malloc(sizeof (pokemon_info));
-    res->pokemon->id = id;
-    res->pokemon->name = name;
+    memcpy(res->pokemon, &pkm_info, sizeof (pokemon_info));
     res->next = NULL;
 
     node_pokemon* last_el;
@@ -23,9 +22,7 @@ pokemon_info* list_add(head_list_pokemon** list, uint8_t id, char* name) {
 }
 
 void list_remove(head_list_pokemon** list, size_t index) {
-    pokemon_info* pi = list_pop(list, index);
-    free(pi->name);
-    free(pi);
+    free(list_pop(list, index)); // pop element and free pokemon_info struct
 }
 
 pokemon_info* list_pop(head_list_pokemon** list, size_t index) {
@@ -65,6 +62,15 @@ pokemon_info* list_get(head_list_pokemon* list, size_t index) {
     return tmp->pokemon;
 }
 
+pokemon_info* list_search_by_name(head_list_pokemon* list, char* name) {
+    for(node_pokemon* tmp = list; tmp != NULL; tmp = tmp->next) {
+        if(strcmp(tmp->pokemon->name, name) == 0) {
+            return tmp->pokemon;
+        }
+    }
+    return NULL;
+}
+
 int list_is_empty(head_list_pokemon* list) {
     return list == NULL;
 }
@@ -87,17 +93,6 @@ void list_print(head_list_pokemon* list) {
         puts("<empty>");
     }
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
-        printf("(%hhu) %s\n", tmp->pokemon->id, tmp->pokemon->name);
+        printf("%s: type: %d, count owned: %u, first seen: %lu, last seen: %lu\n", tmp->pokemon->name, tmp->pokemon->type, tmp->pokemon->count_owned, tmp->pokemon->first_seen, tmp->pokemon->last_seen);
     }
-}
-
-// sort
-void _list_sort_id(head_list_pokemon** list) {
-    puts("Calling _list_sort_id !");
-    list_print(*list);
-}
-
-void _list_sort_name(head_list_pokemon** list) {
-    puts("Calling _list_sort_name !");
-    list_print(*list);
 }
