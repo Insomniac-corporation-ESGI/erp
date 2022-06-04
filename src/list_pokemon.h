@@ -61,6 +61,7 @@ struct pokemon_crud {
 pokemon_info* _list_add(head_list_pokemon** list, struct pokemon_crud pkm_crud);
 pokemon_info* _list_pop(head_list_pokemon** list, struct pokemon_crud pkm_crud);
 pokemon_info* _list_get(head_list_pokemon** list, struct pokemon_crud pkm_crud);
+pokemon_info* _list_update(head_list_pokemon** list, struct pokemon_crud pkm_crud);
 int list_is_empty(head_list_pokemon* list);
 size_t list_length(head_list_pokemon* list);
 void list_print(head_list_pokemon* list);
@@ -69,12 +70,14 @@ pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
 #define ADD 0
 #define POP 1
 #define GET 2
+#define UPDATE 3
 
 extern pokemon_info* (*list_functions[3])(head_list_pokemon**, struct pokemon_crud);
 
 #define INIT_LISTS \
         list_functions[ADD] = _list_add; \
         list_functions[POP] = _list_pop; \
-        list_functions[GET] = _list_get;
+        list_functions[GET] = _list_get; \
+        list_functions[UPDATE] = _list_update; 
 
 #endif

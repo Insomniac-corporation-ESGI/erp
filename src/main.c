@@ -41,6 +41,12 @@ int main(int argc, char** argv) {
 
 	printf("Searching for 'bulbizzare' : %p\n", (void*)list_search_by_name(list, "Bulbizarre"));
 	printf("Searching for 'not found' : %p\n", (void*)list_search_by_name(list, "not found"));
+
+	list_print(list);
+	pkm_crud.index = 0;
+	printf("(element 0)->name: %s\n", list_functions[GET](&list, pkm_crud)->name);
+	list_functions[UPDATE](&list, pkm_crud);
+
 	for(int i = 0; !list_is_empty(list); i++) {
 		printf("size: %lu\n", list_length(list));
 		printf("is empty: %i\n", list_is_empty(list));

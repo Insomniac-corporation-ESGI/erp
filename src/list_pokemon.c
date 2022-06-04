@@ -50,6 +50,19 @@ pokemon_info* _list_pop(head_list_pokemon** list, struct pokemon_crud pkm_crud) 
     return res;
 }
 
+pokemon_info* _list_update(head_list_pokemon** list, struct pokemon_crud pkm_crud) {
+    node_pokemon* tmp = *list;
+    for(size_t i = 0; i < pkm_crud.index && tmp != NULL; i++) {
+        tmp = tmp->next;
+    }
+    if(tmp == NULL) {
+        return NULL;
+    }
+
+    memcpy(tmp->pokemon, &pkm_crud.pkm_info, sizeof (struct pokemon_info));
+    return tmp->pokemon;
+}
+
 pokemon_info* _list_get(head_list_pokemon** list, struct pokemon_crud pkm_crud) {
     node_pokemon* tmp = *list;
     for(size_t i = 0; i < pkm_crud.index && tmp != NULL; i++) {
@@ -71,7 +84,7 @@ size_t list_length(head_list_pokemon* list) {
         return 0;
     }
     size_t size = 0;
-    for(tmp = list; tmp; tmp = tmp->next) {
+    for(tmp = list; tmp != NULL; tmp = tmp->next) {
         size++;
     }
     return size;
@@ -82,8 +95,10 @@ void list_print(head_list_pokemon* list) {
     if(tmp == NULL) {
         puts("<empty>");
     }
+    unsigned int index = 0;
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
-        printf("%s: type: %d, count owned: %u, first seen: %lu, last seen: %lu\n", tmp->pokemon->name, tmp->pokemon->type, tmp->pokemon->count_owned, tmp->pokemon->first_seen, tmp->pokemon->last_seen);
+        printf("index: %u %s: type: %d, count owned: %u, first seen: %lu, last seen: %lu\n", index, tmp->pokemon->name, tmp->pokemon->type, tmp->pokemon->count_owned, tmp->pokemon->first_seen, tmp->pokemon->last_seen);
+        index++;
     }
 }
 
