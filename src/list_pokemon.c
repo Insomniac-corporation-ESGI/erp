@@ -1,8 +1,11 @@
 #include "list_pokemon.h"
 #include <string.h>
 
-// here "name" should be allocated in the heap, as it will be freed if using the list_remove function
-pokemon_info* list_add(head_list_pokemon** list, struct pokemon_info pkm_info) {
+pokemon_info* (*list_functions[3])(head_list_pokemon**, struct pokemon_crud) = { 0 };
+
+// here "pkm_crud->pkm_info->name" should be allocated in the heap, as it will be freed if using the list_remove function
+pokemon_info* _list_add(head_list_pokemon** list, struct pokemon_crud pkm_crud) {
+    struct pokemon_info pkm_info = pkm_crud.pkm_info;
     if(*list == NULL) {
         *list = malloc(sizeof (node_pokemon));
         (*list)->next = NULL;
@@ -21,23 +24,19 @@ pokemon_info* list_add(head_list_pokemon** list, struct pokemon_info pkm_info) {
     return res->pokemon;
 }
 
-void list_remove(head_list_pokemon** list, size_t index) {
-    free(list_pop(list, index)); // pop element and free pokemon_info struct
-}
-
-pokemon_info* list_pop(head_list_pokemon** list, size_t index) {
+pokemon_info* _list_pop(head_list_pokemon** list, struct pokemon_crud pkm_crud) {
     node_pokemon* curr = *list;
     if(curr == NULL) {
         return NULL;
     }
-    if(index == 0) { // special case here because 0-1 would overflow as size_t is unsigned
+    if(pkm_crud.index == 0) { // special case here because 0-1 would overflow as size_t is unsigned
         pokemon_info* res = (*list)->pokemon;
         node_pokemon* tmp = *list;
         *list = (*list)->next;
         free(tmp);
         return res;
     }
-    for(size_t i = 0; i < index-1 && curr != NULL; i++) {
+    for(size_t i = 0; i < pkm_crud.index-1 && curr != NULL; i++) {
         curr = curr->next;
     }
     if(curr == NULL) {
@@ -51,24 +50,15 @@ pokemon_info* list_pop(head_list_pokemon** list, size_t index) {
     return res;
 }
 
-pokemon_info* list_get(head_list_pokemon* list, size_t index) {
-    node_pokemon* tmp = list;
-    for(size_t i = 0; i < index && tmp != NULL; i++) {
+pokemon_info* _list_get(head_list_pokemon** list, struct pokemon_crud pkm_crud) {
+    node_pokemon* tmp = *list;
+    for(size_t i = 0; i < pkm_crud.index && tmp != NULL; i++) {
         tmp = tmp->next;
     }
     if(tmp == NULL) {
         return NULL;
     }
     return tmp->pokemon;
-}
-
-pokemon_info* list_search_by_name(head_list_pokemon* list, char* name) {
-    for(node_pokemon* tmp = list; tmp != NULL; tmp = tmp->next) {
-        if(strcmp(tmp->pokemon->name, name) == 0) {
-            return tmp->pokemon;
-        }
-    }
-    return NULL;
 }
 
 int list_is_empty(head_list_pokemon* list) {
@@ -95,4 +85,13 @@ void list_print(head_list_pokemon* list) {
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
         printf("%s: type: %d, count owned: %u, first seen: %lu, last seen: %lu\n", tmp->pokemon->name, tmp->pokemon->type, tmp->pokemon->count_owned, tmp->pokemon->first_seen, tmp->pokemon->last_seen);
     }
+}
+
+pokemon_info* list_search_by_name(head_list_pokemon* list, char* name) {
+    for(node_pokemon* tmp = list; tmp != NULL; tmp = tmp->next) {
+        if(strcmp(tmp->pokemon->name, name) == 0) {
+            return tmp->pokemon;
+        }
+    }
+    return NULL;
 }
