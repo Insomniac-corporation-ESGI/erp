@@ -13,7 +13,7 @@ $(BUILD)/main.o: $(SRC)/main.c $(BUILD)/list_pokemon.o
 	$(CC) $(CFLAGS) -o $(BUILD)/main.o -c $(SRC)/main.c
 
 $(BUILD)/sqlite_functions.o: $(SRC)/sqlite_functions.h $(SRC)/sqlite_functions.c $(BUILD)/list_pokemon.o
-	$(CC) $(CFLAGS) -o $(BUILD)/sqlite_functions.o -c $(SRC)/sqlite_functions.c $(BUILD)/list_pokemon.o
+	$(CC) $(CFLAGS) -o $(BUILD)/sqlite_functions.o -c $(SRC)/sqlite_functions.c
 
 clean:
 	rm $(BUILD)/* main
