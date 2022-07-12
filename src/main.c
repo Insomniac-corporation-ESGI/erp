@@ -12,10 +12,7 @@ int main(int argc, char** argv) {
 
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Bulbizarre",
-		.type = GRASS,
 		.count_owned = 15,
-		.first_seen = time(NULL),
-		.last_seen = time(NULL),
 	};
 
 	head_list_pokemon* list = NULL;
@@ -24,18 +21,12 @@ int main(int argc, char** argv) {
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Dardagnan",
 		.count_owned = 5,
-		.type = FLYING,
-		.first_seen = time(NULL),
-		.last_seen = time(NULL),
 	};
 	list_functions[ADD](&list, pkm_crud);
 
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Abo",
 		.count_owned = 0,
-		.type = GRASS,
-		.first_seen = time(NULL),
-		.last_seen = time(NULL),
 	};
 	list_functions[ADD](&list, pkm_crud);
 

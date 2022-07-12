@@ -32,13 +32,16 @@ enum pokemon_type {
   FAIRY
 };
 
-struct pokemon_info {
-	char* name;
-	enum pokemon_type type;
-	unsigned int count_owned;
-	time_t first_seen;
-	time_t last_seen;
-
+struct pokemon_info
+{
+	int id;
+       	char *name;
+	char *type_one;
+	char *type_two;
+	char *first_capacity;
+	int count_owned;
+	char *first_seen;
+	char *first_capture;
 };
 
 struct node_pokemon {

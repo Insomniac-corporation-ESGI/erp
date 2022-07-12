@@ -1,49 +1,5 @@
-#include <sqlite3.h> 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-int insert_node_at_end(pokemon_t **linked_list, int id, char *name, char *first_capacity, char *type_one, char *type_two, int count_owned, char *first_seen, char *first_capture){
-        pokemon_t *new_pokemon = malloc(sizeof(*new_pokemon));
-        new_pokemon->id = id;
-        new_pokemon->name = name;
-        new_pokemon->first_capacity = first_capacity;
-        new_pokemon->type_one = type_one;
-	new_pokemon->type_two = type_two;
-        new_pokemon->count_owned = count_owned;
-        new_pokemon->first_seen = first_seen;
-        new_pokemon->first_capture = first_capture;
-        new_pokemon->next = NULL;
-
-	if(*linked_list == NULL){
-		*linked_list = new_pokemon; 
-		return 1;
-	}
-
-        pokemon_t *tmp = *linked_list;
-
-        while (tmp != NULL)
-        {
-                if (tmp->next == NULL)
-                {
-                        tmp->next = new_pokemon;
-                        return 0;
-                }
-                tmp = tmp->next;
-        }
-        return 0;
-}
-
-int display_linked_list(pokemon_t* linked_list){
-        pokemon_t *tmp = linked_list;
-        while(tmp != NULL)
-        {
-		printf("%s\n",tmp->name);
-                //printf("ID : %d\nName: %s\nCapacity : %s\nType one : %s\nType two : %s\nNext : %p\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n", tmp->id, tmp->name, tmp->first_capacity, tmp->type_one, tmp->type_two,  tmp->next, tmp->count_owned, tmp->first_seen, tmp->first_capture);
-                tmp = tmp->next;
-        }
-        return 0;
-}
+#include "sqlite3.h"
+#include "sqlite_functions.h"
 
 int create_db(void){
 	sqlite3 *db;
@@ -147,7 +103,7 @@ int retrieve_all_db(void){
 	return 0;
 	
 }
-int ll_to_db(pokemon_t* linked_list){
+int ll_to_db(head_list_pokemon* linked_list){
 	sqlite3 *db;
 	char *err_msg = 0;
 	sqlite3_stmt *res;
@@ -161,7 +117,7 @@ int ll_to_db(pokemon_t* linked_list){
 		printf("Database opened \n");
 	}
 	
-	pokemon_t *tmp = linked_list;
+	head_list_pokemon *tmp = linked_list;
 
 	while(tmp != NULL)
 	{
@@ -170,24 +126,24 @@ int ll_to_db(pokemon_t* linked_list){
 		rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
 		if(rc == SQLITE_OK){
 			sqlite3_bind_null(res, 1);
-			char *name= tmp->name;
+			char *name= tmp->pokemon->name;
 			int name_length = strlen(name);
 			sqlite3_bind_text(res, 2, name, name_length, SQLITE_STATIC);
-			char *type_one = tmp->type_one;
+			char *type_one = tmp->pokemon->type_one;
 			int type_one_length = strlen(type_one);
 			sqlite3_bind_text(res, 3, type_one, type_one_length, SQLITE_STATIC);
-			char *type_two = tmp->type_two;
+			char *type_two = tmp->pokemon->type_two;
 			int type_two_length = strlen(type_two);
 			sqlite3_bind_text(res, 4, type_two, type_two_length, SQLITE_STATIC);
-			char *first_capacity = tmp->first_capacity;
+			char *first_capacity = tmp->pokemon->first_capacity;
 			int first_capacity_length = strlen(first_capacity);
 			sqlite3_bind_text(res, 5, first_capacity, first_capacity_length, SQLITE_STATIC);
-			int count_owned = tmp->count_owned;
+			int count_owned = tmp->pokemon->count_owned;
 			sqlite3_bind_int(res, 6, count_owned);
-			char *first_seen = tmp->first_seen;
+			char *first_seen = tmp->pokemon->first_seen;
 			int first_seen_length = strlen(first_seen);
 			sqlite3_bind_text(res, 7, first_seen, first_seen_length, SQLITE_STATIC);
-			char *first_capture = tmp->first_capture;
+			char *first_capture = tmp->pokemon->first_capture;
 			int first_capture_length = strlen(first_capture);
 			sqlite3_bind_text(res, 8, first_capture, first_capture_length, SQLITE_STATIC);
 		} else {
@@ -207,19 +163,29 @@ int ll_to_db(pokemon_t* linked_list){
 }	
 
 int callback_to_ll(void *linked_list, int argc, char **argv, char **col_name){
-	
+	struct pokemon_crud crud = {0};
+
 	for(int i = 0; i < argc; i++){
-		insert_node_at_end((pokemon_t **)linked_list, *argv[0], argv[1], argv[2], argv[3], argv[4], *argv[5], argv[6], argv[8]);
+		crud.pkm_info.id = atoi(argv[0]);
+		crud.pkm_info.name = argv[1];
+		crud.pkm_info.type_one = argv[2];
+		crud.pkm_info.type_two = argv[3];
+		crud.pkm_info.first_capacity= argv[4];
+		crud.pkm_info.count_owned = atoi(argv[5]);
+		crud.pkm_info.first_seen = argv[6];
+		crud.pkm_info.first_capture = argv[7];
+
+		list_functions[ADD]((head_list_pokemon **)linked_list, crud);
 	}
 	
 	printf("Row %s done \n", col_name[0]);
 	printf("Row %s done \n", argv[1]);
-	display_linked_list(linked_list);
+	list_print(linked_list);
 	(void)col_name;
 	return 0;	
 }
 
-int db_to_ll(pokemon_t **linked_list){
+int db_to_ll(head_list_pokemon **linked_list){
 	
 	sqlite3 *db;
 	char *err_msg = 0;

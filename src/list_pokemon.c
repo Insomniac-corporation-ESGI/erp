@@ -97,7 +97,8 @@ void list_print(head_list_pokemon* list) {
     }
     unsigned int index = 0;
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
-        printf("index: %u %s: type: %d, count owned: %u, first seen: %lu, last seen: %lu\n", index, tmp->pokemon->name, tmp->pokemon->type, tmp->pokemon->count_owned, tmp->pokemon->first_seen, tmp->pokemon->last_seen);
+    	struct pokemon_info *val = tmp->pokemon;
+        printf("ID : %d\nName: %s\nCapacity : %s\nType one : %s\nType two :%s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n", val->id, val->name, val->first_capacity, val->type_one, val->type_two, val->count_owned, val->first_seen, val->first_capture);
         index++;
     }
 }
