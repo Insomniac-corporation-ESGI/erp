@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "sqlite3.h"
 #include "list_pokemon.h"
 int create_db(void);
 int retrieve_one_db(char *name);

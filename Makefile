@@ -4,7 +4,7 @@ SRC = src
 BUILD = build
 
 all: $(BUILD)/list_pokemon.o $(BUILD)/sqlite_functions.o  $(BUILD)/main.o
-	$(CC) $(CFLAGS) -o main $(BUILD)/main.o $(BUILD)/list_pokemon.o -lsqlite3
+	$(CC) $(CFLAGS) -o main $(BUILD)/main.o $(BUILD)/sqlite_functions.o $(BUILD)/list_pokemon.o -lsqlite3
 
 $(BUILD)/list_pokemon.o: $(SRC)/list_pokemon.h $(SRC)/list_pokemon.c
 	$(CC) $(CFLAGS) -o $(BUILD)/list_pokemon.o -c $(SRC)/list_pokemon.c

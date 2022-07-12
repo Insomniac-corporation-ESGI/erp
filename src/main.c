@@ -2,16 +2,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "list_pokemon.h"
+#include "sqlite_functions.h"
+
 
 int main(int argc, char** argv) {
 	(void) argc;
 	(void) argv;
 	INIT_LISTS;
 
+	create_db();
+
 	struct pokemon_crud pkm_crud;
 
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Bulbizarre",
+		.type_one = "some_type",
+		.type_two = "some_other_type",
+		.first_capacity = "some_capacity",
+		.first_seen = "yesterday",
+		.first_capture = "today",
 		.count_owned = 15,
 	};
 
@@ -20,37 +29,31 @@ int main(int argc, char** argv) {
 
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Dardagnan",
+		.type_one = "some_type",
+		.type_two = "some_other_type",
+		.first_capacity = "some_capacity",
+		.first_seen = "yesterday",
+		.first_capture = "today",
 		.count_owned = 5,
 	};
 	list_functions[ADD](&list, pkm_crud);
 
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Abo",
+		.type_one = "some_type",
+		.type_two = "some_other_type",
+		.first_capacity = "some_capacity",
+		.first_seen = "yesterday",
+		.first_capture = "today",
 		.count_owned = 0,
 	};
 	list_functions[ADD](&list, pkm_crud);
 
-	printf("Searching for 'bulbizzare' : %p\n", (void*)list_search_by_name(list, "Bulbizarre"));
-	printf("Searching for 'not found' : %p\n", (void*)list_search_by_name(list, "not found"));
+	ll_to_db(list);
 
-	list_print(list);
-	pkm_crud.index = 0;
-	printf("(element 0)->name: %s\n", list_functions[GET](&list, pkm_crud)->name);
-	list_functions[UPDATE](&list, pkm_crud);
+	list = NULL;
+	db_to_ll(&list);
 
-	for(int i = 0; !list_is_empty(list); i++) {
-		printf("size: %lu\n", list_length(list));
-		printf("is empty: %i\n", list_is_empty(list));
-
-		pkm_crud.index = 0;
-		pkm_crud.pkm_info = (struct pokemon_info) { 0 };
-
-		printf("(element 0)->name: %s\n", list_functions[GET](&list, pkm_crud)->name);
-		printf("popping: %s\n", list_functions[POP](&list, pkm_crud)->name);
-		list_print(list);
-	}
-	printf("size: %lu\n", list_length(list));
-	printf("is empty: %i\n", list_is_empty(list));
 	list_print(list);
 
     return 0;
