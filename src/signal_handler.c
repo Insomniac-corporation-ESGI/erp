@@ -47,7 +47,12 @@ void sigtstp_handler(int signal){
 }
 
 void sigusr1_handler(int signal){
-	// Traitement usr1
+	
+	signal(signal, SIG_IGN);
+	signal(SIGUSR, sigusr1_handler);
+
+	print("Commande de sauvegarde recue...\nSauvegarde en cours.\n");
+	// fonction Sauvegarde
 }
 
 void sigusr2_handler(int signal){
