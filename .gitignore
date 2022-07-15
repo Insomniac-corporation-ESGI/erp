@@ -57,3 +57,5 @@ build/*.gch
 
 .vscode
 main
+
+pokemon.db

@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define POINTER_ARRAY_SIZE 4
-
+#define POINTER_ARRAY_SIZE_SIGHANDLER 4
 
 
 void sigint_handler(int signal);

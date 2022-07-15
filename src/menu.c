@@ -74,7 +74,7 @@ int add_pokemon_seen(head_list_pokemon **linked_list){
 }
 
 void select_action(int index, head_list_pokemon **linked_list){
-	int(*array_fptr[POINTER_ARRAY_SIZE])(head_list_pokemon **);
+	int(*array_fptr[POINTER_ARRAY_SIZE_MENU])(head_list_pokemon **);
 	array_fptr[0] = add_pokemon_seen;
 	/*array_fptr[1] = &add_pokemon_captured;
 	array_fptr[2] = &display_all_pokemon;
