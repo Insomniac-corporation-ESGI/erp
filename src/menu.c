@@ -1,4 +1,3 @@
-#include "list_pokemon.h"
 #include "menu.h"
 
 
