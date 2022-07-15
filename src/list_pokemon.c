@@ -97,7 +97,8 @@ void list_print(head_list_pokemon* list) {
     }
     unsigned int index = 0;
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
-        printf("index: %u %s: type: %d, count owned: %u, first seen: %lu, last seen: %lu\n", index, tmp->pokemon->name, tmp->pokemon->type, tmp->pokemon->count_owned, tmp->pokemon->first_seen, tmp->pokemon->last_seen);
+    	struct pokemon_info *val = tmp->pokemon;
+        printf("ID : %d\nName: %s\nCapacity : %s\nType one : %s\nType two :%s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n", val->id, val->name, val->first_capacity, val->type_one, val->type_two, val->count_owned, val->first_seen, val->first_capture);
         index++;
     }
 }
@@ -109,4 +110,35 @@ pokemon_info* list_search_by_name(head_list_pokemon* list, char* name) {
         }
     }
     return NULL;
+}
+
+// bubble sort
+void swap(node_pokemon* a, node_pokemon* b) {
+    struct pokemon_info* tmp = a->pokemon;
+    a->pokemon = b->pokemon;
+    b->pokemon = tmp;
+}
+void list_sort(head_list_pokemon** list) {
+    if(*list == NULL) {
+        return ;
+    }
+
+    int swapped;
+    node_pokemon* curr = NULL;
+    node_pokemon* last_sorted = NULL;
+  
+    do { 
+        swapped = 0; 
+        curr = *list; 
+  
+        while (curr->next != last_sorted) { 
+            // if current pokemon's name is greater than the next one, swap them
+            if (strcmp(curr->pokemon->name, curr->next->pokemon->name) > 0) {
+                swap(curr, curr->next); 
+                swapped = 1; 
+            } 
+            curr = curr->next; 
+        } 
+        last_sorted = curr; 
+    } while (swapped); 
 }

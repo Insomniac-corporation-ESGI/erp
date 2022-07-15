@@ -32,13 +32,16 @@ enum pokemon_type {
   FAIRY
 };
 
-struct pokemon_info {
-	char* name;
-	enum pokemon_type type;
-	unsigned int count_owned;
-	time_t first_seen;
-	time_t last_seen;
-
+struct pokemon_info
+{
+	int id;
+  	char *name;
+	char *type_one;
+	char *type_two;
+	char *first_capacity;
+	int count_owned;
+	char *first_seen;
+	char *first_capture;
 };
 
 struct node_pokemon {
@@ -66,6 +69,7 @@ int list_is_empty(head_list_pokemon* list);
 size_t list_length(head_list_pokemon* list);
 void list_print(head_list_pokemon* list);
 pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
+void list_sort(head_list_pokemon** list); // bubble sort
 
 #define ADD 0
 #define POP 1
