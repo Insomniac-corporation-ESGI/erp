@@ -41,9 +41,9 @@ void sigtstp_handler(int signal){
 	// fonction sauvegarde
 	
 	// wait
-
+	
 	printf("Sauvegarde faite.\n");
-
+	raise(SIGTSTP);
 }
 
 void sigusr1_handler(int signal){
