@@ -35,7 +35,7 @@ enum pokemon_type {
 struct pokemon_info
 {
 	int id;
-       	char *name;
+  char *name;
 	char *type_one;
 	char *type_two;
 	char *first_capacity;
@@ -69,6 +69,7 @@ int list_is_empty(head_list_pokemon* list);
 size_t list_length(head_list_pokemon* list);
 void list_print(head_list_pokemon* list);
 pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
+void list_sort(head_list_pokemon** list); // bubble sort
 
 #define ADD 0
 #define POP 1

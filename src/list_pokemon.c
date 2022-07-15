@@ -111,3 +111,34 @@ pokemon_info* list_search_by_name(head_list_pokemon* list, char* name) {
     }
     return NULL;
 }
+
+// bubble sort
+void swap(node_pokemon* a, node_pokemon* b) {
+    struct pokemon_info* tmp = a->pokemon;
+    a->pokemon = b->pokemon;
+    b->pokemon = tmp;
+}
+void list_sort(head_list_pokemon** list) {
+    if(*list == NULL) {
+        return ;
+    }
+
+    int swapped;
+    node_pokemon* curr = NULL;
+    node_pokemon* last_sorted = NULL;
+  
+    do { 
+        swapped = 0; 
+        curr = *list; 
+  
+        while (curr->next != last_sorted) { 
+            // if current pokemon's name is greater than the next one, swap them
+            if (strcmp(curr->pokemon->name, curr->next->pokemon->name) > 0) {
+                swap(curr, curr->next); 
+                swapped = 1; 
+            } 
+            curr = curr->next; 
+        } 
+        last_sorted = curr; 
+    } while (swapped); 
+}
