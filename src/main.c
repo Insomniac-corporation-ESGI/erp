@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "list_pokemon.h"
+#include "signal_handler.h"
 #include "sqlite_functions.h"
 #include "menu.h"
 
