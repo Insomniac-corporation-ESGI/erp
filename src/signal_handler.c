@@ -1,6 +1,11 @@
 #include "signal_handler.h"
+#include "sqlite_functions.h"
+#include "list_pokemon.h"
 
-void sigint_handler(int signal){
+// When the user hits CTRL^C
+// Checks if he done it once, if yes, close no save
+// then asks to save exit, if yes, save and exits
+void sigint_handler(int signal, struct pokemon_crud pkm_crud){
 
 	uint8_t flagActi; // flag 
 
@@ -14,16 +19,17 @@ void sigint_handler(int signal){
  	else
 		flagActi = 1;
 	
-	printf("Voulez-vous:\nsauvegarder et quitter ? (x)\nsauvegarder sans quitter ?(q)\nne pas quitter(n)\n>>> ");
+	printf("Do you want to:\nSave and Exit the program ? (x)\nSave without Exit ?(q)\nDoing Nothing (n)\n>>> ");
 	
 	c = getchar(); // get char
 	getchar(); // flush buffer
 
 	if (c == 'x' || c == 'x'){
-		// fonction sauvegarde
+	
+		ll_to_db(/*linked list pointer*/);
 		exit(1);
 	} else if (c == 'q' || c == 'Q'){
-	
+			
 	} else {
 		raise(SIGINT);
 		flagActi = 0;
@@ -31,31 +37,43 @@ void sigint_handler(int signal){
 
 }
 
-void sigtstp_handler(int signal){
+//when the user hits CTRL^Z
+// Basically Saves
+void sigtstp_handler(int signal, struct pokemon_crud pkm_crud){
 
 	signal(signal, SIG_IGN);
 	signal(SIGTSTP, sigtstp_handler);
 
-	printf("Sauvegarde...\n");
+	printf("Saving..\n");
 
-	// fonction sauvegarde
+	ll_to_db(/*linked list pointer */);
 	
-	// wait
-	
-	printf("Sauvegarde faite.\n");
+	printf("Save done.\n");
 	raise(SIGTSTP);
 }
-
-void sigusr1_handler(int signal){
+// when kill -sigusr1 
+// Basically Saves
+void sigusr1_handler(int signal, struct pokemon_crud pkm_crud){
 	
 	signal(signal, SIG_IGN);
-	signal(SIGUSR, sigusr1_handler);
+	signal(SIGUSR1, sigusr1_handler);
 
-	print("Commande de sauvegarde recue...\nSauvegarde en cours.\n");
-	// fonction Sauvegarde
+	print("Saving command recieved...\nSaving...\n");
+	
+	ll_to_db(/*linked list pointer*/);
+	raise(SIGUSR1);
 }
 
+//When kill -sigusr2
+// Basically do nothing
 void sigusr2_handler(int signal){
 	// Traitement usr2
+	signal(signal, SIG_IGN);
+	signal(SIGUSR1, sigusr2_handler);
+	
+	printf("Congrats, you activated an easter egg);
+
+	//
+	raise(SIGUSR2);
 }
 
