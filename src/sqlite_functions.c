@@ -166,10 +166,7 @@ int ll_to_db(head_list_pokemon* linked_list){
 			int first_seen_length = strlen(first_seen);
 			sqlite3_bind_text(res, 7, first_seen, first_seen_length, SQLITE_STATIC);
 			char *first_capture = tmp->pokemon->first_capture;
-			if(first_capture == NULL) {
-				fprintf(stderr, "first capture cannot be NULL!\n");
-				return 1;
-			}
+
 			int first_capture_length = strlen(first_capture);
 			sqlite3_bind_text(res, 8, first_capture, first_capture_length, SQLITE_STATIC);
 		} else {

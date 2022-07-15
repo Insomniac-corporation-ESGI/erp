@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "list_pokemon.h"
 #include "sqlite_functions.h"
+#include "menu.h"
 
 
 int main(int argc, char** argv) {
@@ -55,6 +56,9 @@ int main(int argc, char** argv) {
 	db_to_ll(&list);
 
 	list_print(list);
+	list_sort(&list);
+	list_print(list);
+	menu(&list);
 
     return 0;
 }

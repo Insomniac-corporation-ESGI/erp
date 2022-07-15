@@ -35,7 +35,7 @@ enum pokemon_type {
 struct pokemon_info
 {
 	int id;
-  char *name;
+  	char *name;
 	char *type_one;
 	char *type_two;
 	char *first_capacity;
