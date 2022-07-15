@@ -123,6 +123,7 @@ int retrieve_all_db(void){
 	
 }
 int ll_to_db(head_list_pokemon* linked_list){
+	drop_db(); // clear db
 	sqlite3 *db;
 	char *err_msg = 0;
 	sqlite3_stmt *res;
@@ -214,14 +215,12 @@ int callback_to_ll(void *linked_list, int argc, char **argv, char **col_name){
 
 	list_functions[ADD]((head_list_pokemon **)linked_list, crud);
 
-	printf("%s %s %s done \n", argv[0], argv[1], argv[2]);
 	(void)col_name;
 	(void)argc;
 	return 0;	
 }
 
 int db_to_ll(head_list_pokemon **linked_list){
-	
 	sqlite3 *db;
 	char *err_msg = 0;
 	int rc = sqlite3_open("pokemon.db", &db);
@@ -244,4 +243,31 @@ int db_to_ll(head_list_pokemon **linked_list){
 	sqlite3_close(db);
 
 	return 0;
+}
+
+int drop_db(void){
+    sqlite3 *db;
+    char *err_msg = NULL;
+    int rc = sqlite3_open("pokemon.db", &db);
+
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return 1;
+    }
+
+    char *sql = "DELETE FROM POKEMON;";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "SQL error : %s \n", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
 }

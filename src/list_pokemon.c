@@ -90,10 +90,27 @@ size_t list_length(head_list_pokemon* list) {
     return size;
 }
 
+size_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon) {
+    node_pokemon* tmp = list;
+    if(tmp == NULL) {
+        return -1;
+    }
+
+    size_t res = 0;
+    for(tmp = list; tmp != NULL; tmp = tmp->next) {
+        if(tmp->pokemon == pokemon) {
+            return res;
+        }
+        res++;
+    }
+
+    return -1;
+}
+
 void list_print(head_list_pokemon* list) {
     node_pokemon* tmp = list;
     if(tmp == NULL) {
-        puts("<empty>");
+        puts("<no pokemon>");
     }
     unsigned int index = 0;
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
