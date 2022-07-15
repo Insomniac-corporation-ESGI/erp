@@ -1,6 +1,7 @@
 #include "sqlite_functions.h"
 
 char *strdup(const char *src) {
+	if(src == NULL) return NULL;
     char *dst = malloc(strlen (src) + 1);  // Space for length plus nul
     if (dst == NULL) return NULL;          // No memory
     strcpy(dst, src);                      // Copy the characters
@@ -33,6 +34,19 @@ int create_db(void){
 	sqlite3_close(db);
 
 	return 0;
+}
+
+int check_if_db_exists(void){
+    FILE *database_file;
+
+    if((database_file = fopen("pokemon.db", "r+")))
+    {
+        fclose(database_file);
+        return 0;
+    } else {
+        create_db();
+        return 1;
+    }
 }
 
 int retrieve_one_db(char *name){
@@ -164,8 +178,12 @@ int ll_to_db(head_list_pokemon* linked_list){
 			sqlite3_bind_text(res, 7, first_seen, first_seen_length, SQLITE_STATIC);
 			char *first_capture = tmp->pokemon->first_capture;
 
-			int first_capture_length = strlen(first_capture);
-			sqlite3_bind_text(res, 8, first_capture, first_capture_length, SQLITE_STATIC);
+			if(first_capture != NULL) {
+				int first_capture_length = strlen(first_capture);
+				sqlite3_bind_text(res, 8, first_capture, first_capture_length, SQLITE_STATIC);
+			} else {
+				sqlite3_bind_null(res, 8);
+			}
 		} else {
 			fprintf(stderr, "Failed to execute statement : %s\n", sqlite3_errmsg(db));
 		}

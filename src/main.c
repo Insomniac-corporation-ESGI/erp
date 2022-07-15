@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 
 	head_list_pokemon* list_pokemon = NULL;
 
-	create_db();
+	check_if_db_exists();
 	db_to_ll(&list_pokemon);
 
 	menu(&list_pokemon);

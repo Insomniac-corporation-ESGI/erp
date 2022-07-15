@@ -3,7 +3,7 @@
 
 #include "list_pokemon.h"
 
-#define POINTER_ARRAY_SIZE_MENU 1
+#define POINTER_ARRAY_SIZE_MENU 8
 
 int add_pokemon_seen(head_list_pokemon **linked_list);
 void menu(head_list_pokemon **linked_list);

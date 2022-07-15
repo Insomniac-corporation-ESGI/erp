@@ -71,6 +71,8 @@ void list_print(head_list_pokemon* list);
 pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
 void list_sort(head_list_pokemon** list); // bubble sort
 
+void print_pokemon(pokemon_info pokemon);
+
 #define ADD 0
 #define POP 1
 #define GET 2

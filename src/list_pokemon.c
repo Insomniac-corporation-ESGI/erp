@@ -98,7 +98,7 @@ void list_print(head_list_pokemon* list) {
     unsigned int index = 0;
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
     	struct pokemon_info *val = tmp->pokemon;
-        printf("ID : %d\nName: %s\nCapacity : %s\nType one : %s\nType two :%s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n", val->id, val->name, val->first_capacity, val->type_one, val->type_two, val->count_owned, val->first_seen, val->first_capture);
+        print_pokemon(*val);
         index++;
     }
 }
@@ -141,4 +141,8 @@ void list_sort(head_list_pokemon** list) {
         } 
         last_sorted = curr; 
     } while (swapped); 
+}
+
+void print_pokemon(pokemon_info pokemon) {
+    printf("---- %s ----\nCapacity : %s\nType one : %s\nType two :%s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n\n", pokemon.name, pokemon.first_capacity, pokemon.type_one, pokemon.type_two, pokemon.count_owned, pokemon.first_seen, pokemon.first_capture);
 }
