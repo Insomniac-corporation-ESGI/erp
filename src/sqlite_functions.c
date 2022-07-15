@@ -31,7 +31,6 @@ int create_db(void){
 	}
 
 	sqlite3_close(db);
-	printf("Table created \n");
 
 	return 0;
 }
@@ -119,8 +118,6 @@ int ll_to_db(head_list_pokemon* linked_list){
 		fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return 1;
-	} else {
-		printf("Database opened \n");
 	}
 	
 	head_list_pokemon *tmp = linked_list;
@@ -215,8 +212,6 @@ int db_to_ll(head_list_pokemon **linked_list){
 		fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return 1;
-	} else {
-		printf("Database opened \n");
 	}
 
 	char *sql = "SELECT id, name, type_one, type_two, first_capacity, count_owned, first_seen, first_capture FROM POKEMON";
