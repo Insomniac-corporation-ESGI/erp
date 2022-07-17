@@ -82,7 +82,7 @@ int retrieve_one_db(char *name){
 
 // Function to display all our DB datas. Argc is the number of cols, **argv is the number of row's data, and **col_name the columns name - not_used is required for using the callback function
 int callback(void *not_used, int argc, char **argv, char **col_name){
-	void(not_used);
+	(void)not_used;
 	for(int i = 0; i < argc; i++){
 		printf("%s = %s \n", col_name[i], argv[i] ? argv[i] : "NULL");
 	}
