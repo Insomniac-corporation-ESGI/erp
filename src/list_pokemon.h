@@ -10,32 +10,10 @@
 #include <time.h>
 
 // POKEMON DATA
-
-enum pokemon_type {
-  NORMAL,
-  FIRE,
-  WATER,
-  ELECTRIC,
-  GRASS,
-  ICE,
-  FIGHTING,
-  POISON,
-  GROUND,
-  FLYING,
-  PSYCHIC,
-  BUG,
-  ROCK,
-  GHOST,
-  DRAGON,
-  DARK,
-  STEEL,
-  FAIRY
-};
-
 struct pokemon_info
 {
 	int id;
-  	char *name;
+	char *name;
 	char *type_one;
 	char *type_two;
 	char *first_capacity;
@@ -71,6 +49,7 @@ void list_print(head_list_pokemon* list);
 pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
 void list_sort(head_list_pokemon** list); // bubble sort
 size_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon);
+void list_free(head_list_pokemon* list);
 
 void print_pokemon(pokemon_info pokemon);
 

@@ -7,11 +7,19 @@ void menu(head_list_pokemon **linked_list){
 	printf("========== Welcome to your Pokedex ! ========== \n");
 	printf("What do you want to do today ? \n");
 	while(1) {
-		printf("1 - Add a pokemon seen ? \n2 - Add a pokemon captured ? \n3 - Display all pokemon ?\n4 - Display one pokemon ?\n5 - Display pokemon captured ?\n6 - Modify a pokemon's name ?\n7 - Delete a pokemon ?\n8 - Save the Pokedex ?\n");
-		printf("Your choice : \n");
+		printf("1 - Add a pokemon seen ? \n2 - Add a pokemon captured ? \n3 - Display all pokemon ?\n4 - Display one pokemon ?\n5 - Display pokemon captured ?\n6 - Modify a pokemon's name ?\n7 - Delete a pokemon ?\n8 - Save the Pokedex ?\n98 - Quit without saving\n99 - Save and quit\n");
+		printf("Your choice : ");
 		int index = 0;
-		scanf("%d", &index);
-		if (index < 1 || index > 8){
+		int flag = scanf("%d", &index);
+		if(flag == EOF) {
+			continue;
+		}
+		if(index == 99) { // quit
+			ll_to_db(*linked_list);
+			break;
+		} else if (index == 98) {
+			break;
+		} else if (index < 1 || index > 8){
 			printf("Bad number !\n");
 			continue;
 		}
@@ -29,27 +37,66 @@ int add_pokemon_seen(head_list_pokemon **linked_list){
 	char *first_capacity = calloc(21, sizeof (char));
 	printf("Well done ! \nWhich pokemon do you want to add ?\n");
 	printf("Name : ");
-	scanf(" %20s", name);
+	if(scanf(" %20s", name) == EOF) {
+		return 0;
+	}
 	while(name == NULL){
 		printf("Name can not be null\n");
 			printf("Name : ");
-			scanf(" %20s", name);
+			if(scanf(" %20s", name) == EOF) {
+				free(name);
+				free(type_one);
+				free(type_two);
+				free(first_capacity);
+				return 0;
+			}
 	}
 	printf("First type : ");
-	scanf(" %20s", type_one);
+	if(scanf(" %20s", type_one) == EOF) {
+		free(name);
+		free(type_one);
+		free(type_two);
+		free(first_capacity);
+		return 0;
+	}
 	while(type_one == NULL){
 		printf("First type can not be null\n");
 		printf("First type : ");
-		scanf(" %20s", type_one);
-	}	
+		if(scanf(" %20s", type_one) == EOF) {
+			free(name);
+			free(type_one);
+			free(type_two);
+			free(first_capacity);
+			return 0;
+		}
+	}
 	printf("Second type (can be empty): ");
-	scanf(" %20s", type_two);
+	if(scanf(" %20s", type_two) == EOF) {
+		free(name);
+		free(type_one);
+		free(type_two);
+		free(first_capacity);
+		return 0;
+	}
+	// remove last '\n'
 	printf("Capacity : ");
-	scanf(" %20s", first_capacity);	
+	if(scanf(" %20s", first_capacity) == EOF) {
+		free(name);
+		free(type_one);
+		free(type_two);
+		free(first_capacity);
+		return 0;
+	}
 	while(first_capacity == NULL){
 		printf("Capacity can not be null\n");
 		printf("Capacity : ");
-		scanf(" %20s", first_capacity);
+		if(scanf(" %20s", first_capacity) == EOF) {
+			free(name);
+			free(type_one);
+			free(type_two);
+			free(first_capacity);
+			return 0;
+		}
 	}
 	
 	struct pokemon_crud new_poke;
@@ -70,7 +117,7 @@ int add_pokemon_seen(head_list_pokemon **linked_list){
 
 int save(head_list_pokemon** list) {
 	ll_to_db(*list);
-	puts("List saved!");
+	puts("Pokedex saved!");
 	return 0;
 }
 
@@ -84,8 +131,13 @@ int display_pokemon_by_name(head_list_pokemon** list) {
 	pokemon_info* res = NULL;
 
 	do {
-		printf("Name ('quit' to quit): ");
-		scanf(" %20s", name);
+		puts("Pokemon owned:");
+		for(node_pokemon* tmp = *list; tmp != NULL; tmp = tmp->next) { printf("'%s' ", tmp->pokemon->name); }
+		printf("\nName ('quit' to quit): ");
+		if(scanf(" %20s", name) == EOF) {
+			free(name);
+			return 0;
+		}
 		if(strcmp(name, "quit") == 0) {
 			return 0;
 		}
@@ -101,9 +153,15 @@ int modify_pokemon_name_by_name(head_list_pokemon** list) {
 	pokemon_info* res = NULL;
 
 	do {
-		printf("Name ('quit' to quit): ");
-		scanf(" %20s", name);
+		puts("Pokemon owned:");
+		for(node_pokemon* tmp = *list; tmp != NULL; tmp = tmp->next) { printf("'%s' ", tmp->pokemon->name); }
+		printf("\nName ('quit' to quit): ");
+		if(scanf(" %20s", name) == EOF) {
+			free(name);
+			return 0;
+		}
 		if(strcmp(name, "quit") == 0) {
+			free(name);
 			return 0;
 		}
 	} while ((res = list_search_by_name(*list, name)) == NULL);
@@ -111,7 +169,10 @@ int modify_pokemon_name_by_name(head_list_pokemon** list) {
 
 	char *new_name = calloc(21, sizeof (char));
 	printf("New name: ");
-	scanf(" %20s", new_name);
+	if(scanf(" %20s", new_name) == EOF) {
+		free(new_name);
+		return 0;
+	}
 
 	free(res->name);
 	res->name = new_name;
@@ -143,9 +204,15 @@ int add_pokemon_captured(head_list_pokemon** list) {
 	pokemon_info* res = NULL;
 
 	do {
-		printf("Name ('quit' to quit): ");
-		scanf(" %20s", name);
+		puts("Pokemon owned:");
+		for(node_pokemon* tmp = *list; tmp != NULL; tmp = tmp->next) { printf("'%s' ", tmp->pokemon->name); }
+		printf("\nName ('quit' to quit): ");
+		if(scanf(" %20s", name) == EOF) {
+			free(name);
+			return 0;
+		}
 		if(strcmp(name, "quit") == 0) {
+			free(name);
 			return 0;
 		}
 	} while ((res = list_search_by_name(*list, name)) == NULL);
@@ -164,9 +231,15 @@ int delete_pokemon(head_list_pokemon** list) {
 	pokemon_info* res = NULL;
 
 	do {
-		printf("Name ('quit' to quit): ");
-		scanf(" %20s", name);
+		puts("Pokemon owned:");
+		for(node_pokemon* tmp = *list; tmp != NULL; tmp = tmp->next) { printf("'%s' ", tmp->pokemon->name); }
+		printf("\nName ('quit' to quit): ");
+		if(scanf(" %20s", name) == EOF) {
+			free(name);
+			return 0;
+		}
 		if(strcmp(name, "quit") == 0) {
+			free(name);
 			return 0;
 		}
 	} while ((res = list_search_by_name(*list, name)) == NULL);
@@ -180,7 +253,9 @@ int delete_pokemon(head_list_pokemon** list) {
 		int choice = -1;
 		do {
 			printf("Release (1) or delete (2): ");
-			scanf(" %d", &choice);
+			if(scanf(" %d", &choice) == EOF) {
+				return 0;
+			}
 		} while(choice != 1 && choice != 2);
 		switch (choice) {
 			case 1:
@@ -199,7 +274,9 @@ int delete_pokemon(head_list_pokemon** list) {
 		int choice = -1;
 		do {
 			printf("Release one (1), release multiple (2), release all (3), delete (4): ");
-			scanf(" %d", &choice);
+			if(scanf(" %d", &choice) == EOF) {
+				return 0;
+			}
 		} while(choice < 1 || choice > 4);
 		switch (choice) {
 			case 1:
@@ -208,9 +285,11 @@ int delete_pokemon(head_list_pokemon** list) {
 			case 2: {
 				unsigned int count = -1;
 				printf("How many: ");
-				scanf(" %u", &count);
+				if(scanf(" %u", &count) == EOF) {
+					return 0;
+				}
 				if (res->count_owned < 0){
-					printf("Error, you cannot erase more pokemons than you have");
+					printf("Error, you cannot erase more pokemons than you have.\n");
 				} else {
 					res->count_owned -= count;
 				}

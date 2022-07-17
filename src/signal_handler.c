@@ -18,10 +18,11 @@ void sigint_handler(int sig){
 	signal(sig, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 
-	if (flagActi == 1)
-		exit(1);
- 	else
+	if (flagActi == 1) {
+		exit(0);
+	} else {
 		flagActi = 1;
+	}
 	
 	printf("Do you want to:\nSave and Exit the program ? (x)\nSave without Exit ?(s)\nDoing Nothing (n)\n>>> ");
 	
@@ -29,16 +30,15 @@ void sigint_handler(int sig){
 	getchar(); // flush buffer
 
 	if (c == 'x' || c == 'x'){
-	
 		printf("Saving...\n");
 		ll_to_db(list_pokemon);
-		exit(1);
+		exit(0);
 	} else if (c == 's' || c == 'S'){
 		ll_to_db(list_pokemon);
-	} else {
-		raise(SIGINT);
+	} else { // if 'n' selected
 		flagActi = 0;
 	}
+	flagActi = 0; // if the user has not sent a sigint again, reset the flag
 }
 
 //when the user hits CTRL^Z

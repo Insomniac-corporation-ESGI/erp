@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 	(void) argv;
 	INIT_LISTS;
 
-//	Signal handling statring
+	//	Signal handling statring
 	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, sigtstp_handler);
 	signal(SIGUSR1, sigusr1_handler);
@@ -24,6 +24,8 @@ int main(int argc, char** argv) {
 	list_sort(&list_pokemon);
 
 	menu(&list_pokemon);
+
+	list_free(list_pokemon);
 
     return 0;
 }

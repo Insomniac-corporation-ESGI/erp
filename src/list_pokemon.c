@@ -160,6 +160,27 @@ void list_sort(head_list_pokemon** list) {
     } while (swapped); 
 }
 
+void list_free(head_list_pokemon* list) {
+    for(node_pokemon* tmp = list; tmp != NULL; tmp = tmp->next) {
+        free(tmp->pokemon->name);
+        free(tmp->pokemon->type_one);
+        if(tmp->pokemon->type_two) {
+            free(tmp->pokemon->type_two);
+        }
+        free(tmp->pokemon->first_capacity);
+        free(tmp->pokemon->first_seen);
+        free(tmp->pokemon->first_capture);
+        free(tmp->pokemon);
+    }
+    node_pokemon* curr = list;
+    node_pokemon* next = curr;
+    while(next != NULL) {
+        next = curr->next;
+        free(curr);
+        curr = next;
+    }
+}
+
 void print_pokemon(pokemon_info pokemon){
 	printf("---- %s ----\nCapacity : %s\nType one : %s\nType two : %s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n\n",pokemon.name, pokemon.first_capacity, pokemon.type_one, pokemon.type_two, pokemon.count_owned, pokemon.first_seen, pokemon.first_capture);
 }
