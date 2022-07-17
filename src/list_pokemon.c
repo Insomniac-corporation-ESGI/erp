@@ -159,7 +159,3 @@ void list_sort(head_list_pokemon** list) {
         last_sorted = curr; 
     } while (swapped); 
 }
-
-void print_pokemon(pokemon_info pokemon) {
-    printf("---- %s ----\nCapacity : %s\nType one : %s\nType two :%s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n\n", pokemon.name, pokemon.first_capacity, pokemon.type_one, pokemon.type_two, pokemon.count_owned, pokemon.first_seen, pokemon.first_capture);
-}
