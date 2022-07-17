@@ -1,9 +1,10 @@
 #include "sqlite_functions.h"
 
+// Function to create the database
 int create_db(void){
-	sqlite3 *db;
-	char *err_msg = 0;
-	int rc = sqlite3_open("pokemon.db", &db);
+	sqlite3 *db; // Sql element in which we store the DB
+	char *err_msg = 0; // Error message storage
+	int rc = sqlite3_open("pokemon.db", &db); // Response code - Use here so see if we can open the database file and store it into or sqlite3 element
 	
 	if(rc != SQLITE_OK){
 		fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
@@ -14,7 +15,7 @@ int create_db(void){
 	char *sql = "DROP TABLE IF EXISTS POKEMON;"
 		    "CREATE TABLE POKEMON(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, type_one TEXT NOT NULL, type_two TEXT, first_capacity TEXT NOT NULL, count_owned INT, first_seen DATETIME, first_capture DATETIME);";
 	 
-	rc = sqlite3_exec(db, sql, 0, 0, &err_msg);	
+	rc = sqlite3_exec(db, sql, 0, 0, &err_msg); // database, sql query, callback funtion (function that will be call at each row), first argument to the callback, error message
 
 	if(rc != SQLITE_OK){
 		fprintf(stderr, "SQL error : %s \n", err_msg);
@@ -43,7 +44,7 @@ int check_if_db_exists(void){
 
 int retrieve_one_db(char *name){
 	sqlite3 *db;
-	sqlite3_stmt *res;
+	sqlite3_stmt *res; // Used to store prepared statement
 	int rc = sqlite3_open("pokemon.db", &db);
 	size_t poke_length = strlen(name);
 	int number_of_columns = 8;
@@ -57,14 +58,14 @@ int retrieve_one_db(char *name){
 	
 	char *sql = "SELECT id, name, type_one, type_two, first_capacity, count_owned, first_seen, first_capture FROM POKEMON WHERE name = ?";
 	 
-	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
+	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0); // database, sql query, max length of query, query storage, pointer to unused portion of sql
 	if(rc == SQLITE_OK){
-		sqlite3_bind_text(res, 1, name, poke_length, SQLITE_STATIC);
+		sqlite3_bind_text(res, 1, name, poke_length, SQLITE_STATIC); // prepared statement, position in query, data to store, data length, destructor : the content pointer is constant and will never change, doesn't need to be destroyed
 	} else {
 		fprintf(stderr, "Failed to execute statement : %s\n", sqlite3_errmsg(db));
 	}
 	
-	int step = sqlite3_step(res);
+	int step = sqlite3_step(res); // Evaluate the statement - Return value in SQLITE_ROW or SQLITE_ERROR
 
 	if(step == SQLITE_ROW){
 		for(counter = 0; counter < number_of_columns; counter++){
@@ -72,16 +73,16 @@ int retrieve_one_db(char *name){
 		}
 	}
 
-	sqlite3_finalize(res);
-	sqlite3_close(db);
-
+	sqlite3_finalize(res); // Used to delete the prepare statement 
+	sqlite3_close(db); 
+ 
 	return 0;
 	
 }
 
 // Function to display all our DB datas. Argc is the number of cols, **argv is the number of row's data, and **col_name the columns name - not_used is required for using the callback function
 int callback(void *not_used, int argc, char **argv, char **col_name){
-	fprintf(stderr, "%p", not_used);
+	void(not_used);
 	for(int i = 0; i < argc; i++){
 		printf("%s = %s \n", col_name[i], argv[i] ? argv[i] : "NULL");
 	}
@@ -102,7 +103,7 @@ int retrieve_all_db(void){
 	
 	char *sql = "SELECT id, name, type_one, type_two, first_capacity, count_owned, first_seen, first_capture FROM POKEMON";
 	 
-	rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
+	rc = sqlite3_exec(db, sql, callback, 0, &err_msg); // For each rows call callback which print the datas - 0 is for the arg in callback
 	if(rc != SQLITE_OK){
 		fprintf(stderr, "Failed to execute statement : %s\n", sqlite3_errmsg(db));
 		sqlite3_free(err_msg);
@@ -115,7 +116,7 @@ int retrieve_all_db(void){
 	
 }
 int ll_to_db(head_list_pokemon* linked_list){
-	drop_db(); // clear db
+	drop_db(); // Clear db
 	sqlite3 *db;
 	char *err_msg = 0;
 	sqlite3_stmt *res;
