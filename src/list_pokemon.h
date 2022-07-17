@@ -79,7 +79,7 @@ void print_pokemon(pokemon_info pokemon);
 #define GET 2
 #define UPDATE 3
 
-extern pokemon_info* (*list_functions[3])(head_list_pokemon**, struct pokemon_crud);
+extern pokemon_info* (*list_functions[4])(head_list_pokemon**, struct pokemon_crud);
 
 #define INIT_LISTS \
         list_functions[ADD] = _list_add; \

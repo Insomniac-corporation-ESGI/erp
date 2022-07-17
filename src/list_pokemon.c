@@ -1,7 +1,7 @@
 #include "list_pokemon.h"
 #include <string.h>
 
-pokemon_info* (*list_functions[3])(head_list_pokemon**, struct pokemon_crud) = { 0 };
+pokemon_info* (*list_functions[4])(head_list_pokemon**, struct pokemon_crud) = { 0 };
 
 // here "pkm_crud->pkm_info->name" should be allocated in the heap, as it will be freed if using the list_remove function
 pokemon_info* _list_add(head_list_pokemon** list, struct pokemon_crud pkm_crud) {

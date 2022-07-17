@@ -17,6 +17,7 @@ void menu(head_list_pokemon **linked_list){
 		}
 		index -= 1;
 		select_action(index, linked_list);
+		list_sort(linked_list); // sort after modifications
 	}
 }
 
