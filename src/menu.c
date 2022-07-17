@@ -24,7 +24,9 @@ void menu(head_list_pokemon **linked_list){
 			continue;
 		}
 		index -= 1;
+		printf("\n");
 		select_action(index, linked_list);
+		printf("\n");
 		list_sort(linked_list); // sort after modifications
 	}
 }
