@@ -16,6 +16,12 @@ int main(int argc, char** argv) {
 
 	struct pokemon_crud pkm_crud;
 
+	// generating signal handling
+	signal(SIGINT, sigint_handler);
+	signal(SIGTSTP, sigtstp_handler);
+	signal(SIGUSR1, sigusr1_handler);
+	signal(SIGUSR2, sigusr2_handler);
+
 	pkm_crud.pkm_info = (struct pokemon_info){
 		.name = "Bulbizarre",
 		.type_one = "some_type",

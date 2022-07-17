@@ -5,7 +5,7 @@
 // When the user hits CTRL^C
 // Checks if he done it once, if yes, close no save
 // then asks to save exit, if yes, save and exits
-void sigint_handler(int signal, struct pokemon_crud pkm_crud){
+void sigint_handler(int signal){
 
 	uint8_t flagActi; // flag 
 
@@ -39,7 +39,7 @@ void sigint_handler(int signal, struct pokemon_crud pkm_crud){
 
 //when the user hits CTRL^Z
 // Basically Saves
-void sigtstp_handler(int signal, struct pokemon_crud pkm_crud){
+void sigtstp_handler(int signal){
 
 	signal(signal, SIG_IGN);
 	signal(SIGTSTP, sigtstp_handler);
@@ -53,7 +53,7 @@ void sigtstp_handler(int signal, struct pokemon_crud pkm_crud){
 }
 // when kill -sigusr1 
 // Basically Saves
-void sigusr1_handler(int signal, struct pokemon_crud pkm_crud){
+void sigusr1_handler(int signal){
 	
 	signal(signal, SIG_IGN);
 	signal(SIGUSR1, sigusr1_handler);
@@ -71,9 +71,8 @@ void sigusr2_handler(int signal){
 	signal(signal, SIG_IGN);
 	signal(SIGUSR1, sigusr2_handler);
 	
-	printf("Congrats, you activated an easter egg);
+	printf("Congrats, you activated an easter egg");
 
-	//
 	raise(SIGUSR2);
 }
 
