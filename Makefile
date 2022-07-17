@@ -15,10 +15,10 @@ $(BUILD)/main.o: $(SRC)/main.c
 $(BUILD)/sqlite_functions.o: $(SRC)/sqlite_functions.h $(SRC)/sqlite_functions.c
 	$(CC) $(CFLAGS) -o $(BUILD)/sqlite_functions.o -c $(SRC)/sqlite_functions.c
 	
-$(BUILD)/menu.o: $(SRC)/menu.h $(SRC)/menu.c 
+$(BUILD)/menu.o: $(SRC)/menu.h $(SRC)/menu.c
 	$(CC) $(CFLAGS) -o $(BUILD)/menu.o -c $(SRC)/menu.c
 
-$(BUILD)/signal_handler.o: $(SRC)/signal_handler.h $(SRC)/signal_handler.c 
+$(BUILD)/signal_handler.o: $(SRC)/signal_handler.h $(SRC)/signal_handler.c
 	$(CC) $(CFLAGS) -o $(BUILD)/signal_handler.o -c $(SRC)/signal_handler.c
 
 $(BUILD)/utils.o: $(SRC)/utils.h $(SRC)/utils.c 
