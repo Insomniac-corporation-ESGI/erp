@@ -208,8 +208,12 @@ int delete_pokemon(head_list_pokemon** list) {
 				unsigned int count = -1;
 				printf("How many: ");
 				scanf(" %u", &count);
-				// TODO: check if count_owned is not negative
-				res->count_owned -= count;
+				if (res->count_owned < 0){
+					printf("Error, you cannot erase more pokemons than you have");
+					break;
+				} else {
+					res->count_owned -= count;
+				}
 				break;
 			}
 			case 3: {
