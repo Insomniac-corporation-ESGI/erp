@@ -9,10 +9,10 @@ all: $(BUILD)/list_pokemon.o $(BUILD)/sqlite_functions.o  $(BUILD)/main.o $(BUIL
 $(BUILD)/list_pokemon.o: $(SRC)/list_pokemon.h $(SRC)/list_pokemon.c
 	$(CC) $(CFLAGS) -o $(BUILD)/list_pokemon.o -c $(SRC)/list_pokemon.c
 
-$(BUILD)/main.o: $(SRC)/main.c $(BUILD)/list_pokemon.o
+$(BUILD)/main.o: $(SRC)/main.c
 	$(CC) $(CFLAGS) -o $(BUILD)/main.o -c $(SRC)/main.c
 
-$(BUILD)/sqlite_functions.o: $(SRC)/sqlite_functions.h $(SRC)/sqlite_functions.c $(BUILD)/list_pokemon.o
+$(BUILD)/sqlite_functions.o: $(SRC)/sqlite_functions.h $(SRC)/sqlite_functions.c
 	$(CC) $(CFLAGS) -o $(BUILD)/sqlite_functions.o -c $(SRC)/sqlite_functions.c
 	
 $(BUILD)/menu.o: $(SRC)/menu.h $(SRC)/menu.c 
