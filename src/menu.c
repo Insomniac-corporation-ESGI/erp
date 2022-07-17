@@ -21,6 +21,7 @@ void menu(head_list_pokemon **linked_list){
 	}
 }
 
+
 int add_pokemon_seen(head_list_pokemon **linked_list){
 	char *name = calloc(21, sizeof (char));
 	char *type_one = calloc(21, sizeof (char));
@@ -210,7 +211,6 @@ int delete_pokemon(head_list_pokemon** list) {
 				scanf(" %u", &count);
 				if (res->count_owned < 0){
 					printf("Error, you cannot erase more pokemons than you have");
-					break;
 				} else {
 					res->count_owned -= count;
 				}
