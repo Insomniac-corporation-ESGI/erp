@@ -70,13 +70,16 @@ size_t list_length(head_list_pokemon* list);
 void list_print(head_list_pokemon* list);
 pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
 void list_sort(head_list_pokemon** list); // bubble sort
+size_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon);
+
+void print_pokemon(pokemon_info pokemon);
 
 #define ADD 0
 #define POP 1
 #define GET 2
 #define UPDATE 3
 
-extern pokemon_info* (*list_functions[3])(head_list_pokemon**, struct pokemon_crud);
+extern pokemon_info* (*list_functions[4])(head_list_pokemon**, struct pokemon_crud);
 
 #define INIT_LISTS \
         list_functions[ADD] = _list_add; \

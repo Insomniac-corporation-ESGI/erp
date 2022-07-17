@@ -1,7 +1,7 @@
 #include "list_pokemon.h"
 #include <string.h>
 
-pokemon_info* (*list_functions[3])(head_list_pokemon**, struct pokemon_crud) = { 0 };
+pokemon_info* (*list_functions[4])(head_list_pokemon**, struct pokemon_crud) = { 0 };
 
 // here "pkm_crud->pkm_info->name" should be allocated in the heap, as it will be freed if using the list_remove function
 pokemon_info* _list_add(head_list_pokemon** list, struct pokemon_crud pkm_crud) {
@@ -90,15 +90,32 @@ size_t list_length(head_list_pokemon* list) {
     return size;
 }
 
+size_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon) {
+    node_pokemon* tmp = list;
+    if(tmp == NULL) {
+        return -1;
+    }
+
+    size_t res = 0;
+    for(tmp = list; tmp != NULL; tmp = tmp->next) {
+        if(tmp->pokemon == pokemon) {
+            return res;
+        }
+        res++;
+    }
+
+    return -1;
+}
+
 void list_print(head_list_pokemon* list) {
     node_pokemon* tmp = list;
     if(tmp == NULL) {
-        puts("<empty>");
+        puts("<no pokemon>");
     }
     unsigned int index = 0;
     for(tmp = list; tmp != NULL; tmp = tmp->next) {
     	struct pokemon_info *val = tmp->pokemon;
-        printf("ID : %d\nName: %s\nCapacity : %s\nType one : %s\nType two :%s\nCapture : %d\nFirst seen : %s\nFirst capture : %s\n", val->id, val->name, val->first_capacity, val->type_one, val->type_two, val->count_owned, val->first_seen, val->first_capture);
+        print_pokemon(*val);
         index++;
     }
 }

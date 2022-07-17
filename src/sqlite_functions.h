@@ -7,6 +7,8 @@
 #include "sqlite3.h"
 #include "list_pokemon.h"
 int create_db(void);
+int check_if_db_exists(void);
+int drop_db(void);
 int retrieve_one_db(char *name);
 int callback(void *not_used, int argc, char **argv, char **col_name);
 int retrieve_all_db(void);

@@ -1,6 +1,7 @@
 #include "sqlite_functions.h"
 
 char *strdup(const char *src) {
+	if(src == NULL) return NULL;
     char *dst = malloc(strlen (src) + 1);  // Space for length plus nul
     if (dst == NULL) return NULL;          // No memory
     strcpy(dst, src);                      // Copy the characters
@@ -31,9 +32,21 @@ int create_db(void){
 	}
 
 	sqlite3_close(db);
-	printf("Table created \n");
 
 	return 0;
+}
+
+int check_if_db_exists(void){
+    FILE *database_file;
+
+    if((database_file = fopen("pokemon.db", "r+")))
+    {
+        fclose(database_file);
+        return 0;
+    } else {
+        create_db();
+        return 1;
+    }
 }
 
 int retrieve_one_db(char *name){
@@ -110,6 +123,7 @@ int retrieve_all_db(void){
 	
 }
 int ll_to_db(head_list_pokemon* linked_list){
+	drop_db(); // clear db
 	sqlite3 *db;
 	char *err_msg = 0;
 	sqlite3_stmt *res;
@@ -119,8 +133,6 @@ int ll_to_db(head_list_pokemon* linked_list){
 		fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return 1;
-	} else {
-		printf("Database opened \n");
 	}
 	
 	head_list_pokemon *tmp = linked_list;
@@ -167,8 +179,12 @@ int ll_to_db(head_list_pokemon* linked_list){
 			sqlite3_bind_text(res, 7, first_seen, first_seen_length, SQLITE_STATIC);
 			char *first_capture = tmp->pokemon->first_capture;
 
-			int first_capture_length = strlen(first_capture);
-			sqlite3_bind_text(res, 8, first_capture, first_capture_length, SQLITE_STATIC);
+			if(first_capture != NULL) {
+				int first_capture_length = strlen(first_capture);
+				sqlite3_bind_text(res, 8, first_capture, first_capture_length, SQLITE_STATIC);
+			} else {
+				sqlite3_bind_null(res, 8);
+			}
 		} else {
 			fprintf(stderr, "Failed to execute statement : %s\n", sqlite3_errmsg(db));
 		}
@@ -199,14 +215,12 @@ int callback_to_ll(void *linked_list, int argc, char **argv, char **col_name){
 
 	list_functions[ADD]((head_list_pokemon **)linked_list, crud);
 
-	printf("%s %s %s done \n", argv[0], argv[1], argv[2]);
 	(void)col_name;
 	(void)argc;
 	return 0;	
 }
 
 int db_to_ll(head_list_pokemon **linked_list){
-	
 	sqlite3 *db;
 	char *err_msg = 0;
 	int rc = sqlite3_open("pokemon.db", &db);
@@ -215,8 +229,6 @@ int db_to_ll(head_list_pokemon **linked_list){
 		fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return 1;
-	} else {
-		printf("Database opened \n");
 	}
 
 	char *sql = "SELECT id, name, type_one, type_two, first_capacity, count_owned, first_seen, first_capture FROM POKEMON";
@@ -231,4 +243,31 @@ int db_to_ll(head_list_pokemon **linked_list){
 	sqlite3_close(db);
 
 	return 0;
+}
+
+int drop_db(void){
+    sqlite3 *db;
+    char *err_msg = NULL;
+    int rc = sqlite3_open("pokemon.db", &db);
+
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "Cannot open database : %s \n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return 1;
+    }
+
+    char *sql = "DELETE FROM POKEMON;";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "SQL error : %s \n", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
 }
