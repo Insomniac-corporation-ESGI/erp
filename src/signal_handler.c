@@ -11,7 +11,7 @@ extern head_list_pokemon* list_pokemon;
 // then asks to save exit, if yes, save and exits
 void sigint_handler(int sig){
 
-	uint8_t flagActi = 0; // flag 
+	static uint8_t flagActi = 0; // flag 
 
 	int8_t c; // choice init
 
@@ -23,7 +23,7 @@ void sigint_handler(int sig){
  	else
 		flagActi = 1;
 	
-	printf("Do you want to:\nSave and Exit the program ? (x)\nSave without Exit ?(q)\nDoing Nothing (n)\n>>> ");
+	printf("Do you want to:\nSave and Exit the program ? (x)\nSave without Exit ?(s)\nDoing Nothing (n)\n>>> ");
 	
 	c = getchar(); // get char
 	getchar(); // flush buffer
@@ -33,8 +33,8 @@ void sigint_handler(int sig){
 		printf("Saving...\n");
 		ll_to_db(list_pokemon);
 		exit(1);
-	} else if (c == 'q' || c == 'Q'){
-			
+	} else if (c == 's' || c == 'S'){
+		ll_to_db(list_pokemon);
 	} else {
 		raise(SIGINT);
 		flagActi = 0;
