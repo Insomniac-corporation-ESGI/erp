@@ -8,13 +8,13 @@ extern head_list_pokemon* list_pokemon;
 // When the user hits CTRL^C
 // Checks if he done it once, if yes, close no save
 // then asks to save exit, if yes, save and exits
-void sigint_handler(int signal){
+void sigint_handler(int sig){
 
-	uint8_t flagActi; // flag 
+	uint8_t flagActi = 0; // flag 
 
 	int8_t c; // choice init
 
-	signal(signal, SIG_IGN);
+	signal(sig, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 
 	if (flagActi == 1)
@@ -30,7 +30,7 @@ void sigint_handler(int signal){
 	if (c == 'x' || c == 'x'){
 	
 		printf("Saving...\n");
-		ll_to_db(&list_pokemon);
+		ll_to_db(list_pokemon);
 		exit(1);
 	} else if (c == 'q' || c == 'Q'){
 			
@@ -38,43 +38,35 @@ void sigint_handler(int signal){
 		raise(SIGINT);
 		flagActi = 0;
 	}
-
 }
 
 //when the user hits CTRL^Z
 // Basically Saves
-void sigtstp_handler(int signal){
-
-	signal(signal, SIG_IGN);
-	signal(SIGTSTP, sigtstp_handler);
+void sigtstp_handler(int sig){
+	(void)sig;
 
 	printf("Saving..\n");
-	ll_to_db(&list_pokemon);
-
+	ll_to_db(list_pokemon);
 	
 	printf("Save done.\n");
 	raise(SIGTSTP);
 }
 // when kill -sigusr1 
 // Basically Saves
-void sigusr1_handler(int signal){
-	
-	signal(signal, SIG_IGN);
-	signal(SIGUSR1, sigusr1_handler);
+void sigusr1_handler(int sig){
+	(void)sig;	
 
 	printf("Saving command recieved...\nSaving...\n");
-	ll_to_db(&list_pokemon);
+	ll_to_db(list_pokemon);
 
 	raise(SIGUSR1);
 }
 
 //When kill -sigusr2
 // Basically do nothing
-void sigusr2_handler(int signal){
-	// Traitement usr2
-	signal(signal, SIG_IGN);
-	signal(SIGUSR1, sigusr2_handler);
-	
+void sigusr2_handler(int sig){
+	(void)sig;
+
 	printf("Congrats, you activated an easter egg");
 
 	raise(SIGUSR2);
