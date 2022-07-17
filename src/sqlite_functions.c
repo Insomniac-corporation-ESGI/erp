@@ -1,13 +1,5 @@
 #include "sqlite_functions.h"
 
-char *strdup(const char *src) {
-	if(src == NULL) return NULL;
-    char *dst = malloc(strlen (src) + 1);  // Space for length plus nul
-    if (dst == NULL) return NULL;          // No memory
-    strcpy(dst, src);                      // Copy the characters
-    return dst;                            // Return the new string
-}
-
 int create_db(void){
 	sqlite3 *db;
 	char *err_msg = 0;

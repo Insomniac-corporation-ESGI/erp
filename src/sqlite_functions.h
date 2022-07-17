@@ -1,11 +1,14 @@
 #ifndef SQLITE_FUNCTION_H
 #define SQLITE_FUNCTION_H
+
 #include <sqlite3.h> 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "sqlite3.h"
 #include "list_pokemon.h"
+#include "utils.h"
+
 int create_db(void);
 int check_if_db_exists(void);
 int drop_db(void);

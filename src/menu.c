@@ -21,17 +21,6 @@ void menu(head_list_pokemon **linked_list){
 	}
 }
 
-char* get_now_as_str() {
-  time_t current_time;
-  char* timeString = calloc(11, sizeof (char));
-
-  time(&current_time);
-  struct tm* time_info = localtime(&current_time);
-
-  strftime(timeString, 11, "%d/%m/%Y", time_info);
-  return timeString;
-}
-
 int add_pokemon_seen(head_list_pokemon **linked_list){
 	char *name = calloc(21, sizeof (char));
 	char *type_one = calloc(21, sizeof (char));

@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include "list_pokemon.h"
+#include "utils.h"
 
 #define POINTER_ARRAY_SIZE_MENU 8
 
