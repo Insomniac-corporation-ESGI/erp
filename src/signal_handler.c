@@ -2,6 +2,9 @@
 #include "sqlite_functions.h"
 #include "list_pokemon.h"
 
+extern head_list_pokemon* list_pokemon;
+
+
 // When the user hits CTRL^C
 // Checks if he done it once, if yes, close no save
 // then asks to save exit, if yes, save and exits
@@ -26,7 +29,8 @@ void sigint_handler(int signal){
 
 	if (c == 'x' || c == 'x'){
 	
-		ll_to_db(/*linked list pointer*/);
+		printf("Saving...\n");
+		ll_to_db(&list_pokemon);
 		exit(1);
 	} else if (c == 'q' || c == 'Q'){
 			
@@ -45,8 +49,8 @@ void sigtstp_handler(int signal){
 	signal(SIGTSTP, sigtstp_handler);
 
 	printf("Saving..\n");
+	ll_to_db(&list_pokemon);
 
-	ll_to_db(/*linked list pointer */);
 	
 	printf("Save done.\n");
 	raise(SIGTSTP);
@@ -58,9 +62,9 @@ void sigusr1_handler(int signal){
 	signal(signal, SIG_IGN);
 	signal(SIGUSR1, sigusr1_handler);
 
-	print("Saving command recieved...\nSaving...\n");
-	
-	ll_to_db(/*linked list pointer*/);
+	printf("Saving command recieved...\nSaving...\n");
+	ll_to_db(&list_pokemon);
+
 	raise(SIGUSR1);
 }
 

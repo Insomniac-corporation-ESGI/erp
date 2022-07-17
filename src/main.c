@@ -13,6 +13,12 @@ int main(int argc, char** argv) {
 	(void) argv;
 	INIT_LISTS;
 
+//	Signal handling statring
+	signal(SIGINT, sigint_handler);
+	signal(SIGTSTP, sigtstp_handler);
+	signal(SIGUSR1, sigusr1_handler);
+	signal(SIGUSR2, sigusr2_handler);
+
 	check_if_db_exists();
 	db_to_ll(&list_pokemon);
 	list_sort(&list_pokemon);
