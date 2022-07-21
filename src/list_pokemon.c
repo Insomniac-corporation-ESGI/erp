@@ -59,6 +59,16 @@ pokemon_info* _list_update(head_list_pokemon** list, struct pokemon_crud pkm_cru
         return NULL;
     }
 
+    // free beofre overwrite
+    free(tmp->pokemon->first_capacity);
+    free(tmp->pokemon->first_capture);
+    free(tmp->pokemon->first_seen);
+    free(tmp->pokemon->name);
+    free(tmp->pokemon->type_one);
+    if(tmp->pokemon->type_two) {
+        free(tmp->pokemon->type_two);
+    }
+
     memcpy(tmp->pokemon, &pkm_crud.pkm_info, sizeof (struct pokemon_info));
     return tmp->pokemon;
 }
@@ -90,7 +100,7 @@ size_t list_length(head_list_pokemon* list) {
     return size;
 }
 
-size_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon) {
+ssize_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon) {
     node_pokemon* tmp = list;
     if(tmp == NULL) {
         return -1;

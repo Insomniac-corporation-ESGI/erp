@@ -32,6 +32,7 @@ void sigint_handler(int sig){
 	if (c == 'x' || c == 'x'){
 		printf("Saving...\n");
 		ll_to_db(list_pokemon);
+		list_free(list_pokemon);
 		exit(0);
 	} else if (c == 's' || c == 'S'){
 		ll_to_db(list_pokemon);

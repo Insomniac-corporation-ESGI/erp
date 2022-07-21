@@ -48,7 +48,7 @@ size_t list_length(head_list_pokemon* list);
 void list_print(head_list_pokemon* list);
 pokemon_info* list_search_by_name(head_list_pokemon* list, char* name);
 void list_sort(head_list_pokemon** list); // bubble sort
-size_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon);
+ssize_t list_get_index(head_list_pokemon* list, pokemon_info* pokemon);
 void list_free(head_list_pokemon* list);
 
 void print_pokemon(pokemon_info pokemon);
